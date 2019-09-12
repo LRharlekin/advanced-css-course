@@ -1,0 +1,206 @@
+/*
+COLORS:
+
+Light green: 
+  #7ed56f
+  rgb(126,213,111)
+Medium green: 
+  #55c57a
+  rgb(85,197,122)
+Dark green: 
+  #28b485
+  rgb(40,180,133)
+*/
+
+$color-primary: #55c57a;
+$color-primary-light: #7ed56f;
+$color-primary-dark: #28b485;
+
+$color-grey-dark: #777;
+$color-white: #fff;
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; /* inherits from body */
+}
+
+html {
+  font-size: 62.5%; /* set root font-size for rem unit reference, 62.5% of 16px (most browser default font sizes) = 10px = 1rem */
+}
+
+body {
+  font-family: "Lato", sans-serif; /* will be inherited by all other elements */
+  font-weight: 400;
+  /* font-size: 16px; */
+  line-height: 1.7;
+  color: $color-grey-dark;
+  padding: 3rem;
+  box-sizing: border-box;
+}
+
+.header {
+  height: 95vh; /* 95% of the viewport */
+  background-image: linear-gradient(to right bottom,
+      rgba($color-primary-light, 0.8),
+      rgba($color-primary-dark, 0.8)
+    ),
+    url(../img/hero.jpg);
+  background-size: cover; /* bg img dynamically resizes to always cover the header area */
+  background-position: top; /* bg img crops at bottom and sides but never at top when resizing (responsive feature) */
+  position: relative;
+  
+  clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+}
+
+.header__logo-box {
+  position: absolute;
+  top: 4rem;
+  left: 4rem;
+}
+
+.header__logo {
+  height: 3.5rem;
+}
+
+.header__text-box {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* positioning now relates to middle axes of box itself, not top-left corner */
+  text-align: center;
+}
+
+.heading-primary {
+  color: $color-white;
+  text-transform: uppercase;
+
+  backface-visibility: hidden; /* usually used for rotation-animations, but can fix shakyness in other types of animations as well */
+  margin-bottom: 6rem; /* adding white-space between headline and button */
+}
+
+.heading-primary--main {
+  display: block;
+  font-size: 6rem;
+  font-weight: 400;
+  letter-spacing: 3.5rem;
+
+  animation-name: moveInLeft;
+  animation-duration: 0.8s;
+  animation-timing-function: ease-out;
+  /*
+  animation-iteration-count: 3;
+  animation-delay: 1s;
+  */
+}
+
+.heading-primary--sub {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1.75rem;
+  animation: moveInRight 0.8s ease-out;
+}
+
+@keyframes moveInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-10rem);
+  }
+
+  80% {
+    transform: translateX(1rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+@keyframes moveInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(10rem);
+  }
+
+  80% {
+    transform: translateX(-1rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+@keyframes moveInBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+
+/* specify those 2 subclasses together so we don't have a different "visited" styling */
+.btn:link, /* :link and :visited are pseudo-classes */
+.btn:visited {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1.5rem 4rem;
+  display: inline-block; /* always do this if you want to give some height, width, or padding to elements */
+  border-radius: 10rem; /* putting a too high number here will automatically create the round "pill" button shape*/
+  /* transition property has to be on initial state */
+  transition: all .2s; /* specify the properties that will be animated (in this case everything in :hover and :active pseudo-classes */
+  position: relative;
+  font-size: 1.6rem;
+}
+
+.btn--animated {
+  animation: moveInBottom .6s ease-out .2s;
+  animation-fill-mode: backwards; /* applies 0% style until the animation starts (otherwise btn would be already visible during .4s delay) */
+}
+
+.btn:hover {
+  transform: translateY(-.3rem);
+  box-shadow: 0 1rem 2rem rgba(0,0,0,.2); /* SYNTAX box-shadow: x-offset y-offset blur color&opacity */
+}
+
+.btn:active {
+  transform: translateY(-.1rem); /* relates to original position, not to hover-position (transformY: -3px), so actually moves button 2px down */
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.2);
+}
+
+.btn--white {
+  background-color: $color-white;
+  color: $color-grey-dark;
+}
+
+.btn::after {
+  content: ""; /* has to be specified, even if empty */
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  border-radius: 10rem;
+  position: absolute; /* in reference to first relative parent, in this case .btn:link & .btn:visited */
+  top: 0;
+  left: 0;
+  z-index: -1;
+  transition: all .4s; /* specify the properties that will be animated (in this case */
+}
+
+.btn--white::after {
+  background-color: $color-white;
+}
+
+.btn:hover::after {
+  transform: scaleX(1.4) scaleY(1.6);
+  opacity: 0;
+}
